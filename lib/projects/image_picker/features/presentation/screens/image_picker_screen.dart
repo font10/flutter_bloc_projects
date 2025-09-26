@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_bloc_projects/projects/image_picker/core/extensions/text_extension.dart';
+import 'package:flutter_bloc_projects/shared/extensions/text_extension.dart';
 import 'package:flutter_bloc_projects/projects/image_picker/features/presentation/widgets/molecule/image_preview.dart';
 import 'package:flutter_bloc_projects/projects/image_picker/features/presentation/widgets/molecule/select_an_image.dart';
 import 'package:flutter_bloc_projects/projects/image_picker/features/presentation/bloc/image_picker_bloc.dart';
+import 'package:flutter_bloc_projects/shared/widgets/atom/custom_app_bar.dart';
 
 class ImagePickerScreen extends StatelessWidget {
   const ImagePickerScreen({super.key});
@@ -11,11 +12,7 @@ class ImagePickerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(TextExtension.name, style: const TextStyle(color: Colors.white, fontSize: 16)),
-          backgroundColor: Colors.grey.shade900,
-          centerTitle: true,
-        ),
+        appBar: CustomAppBar(title: TextExtension.imagePickerTitle),
         body: BlocBuilder<ImagePickerBloc, ImagePickerState>(
           builder: (context, state) {
             return Column(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc_projects/projects/image_picker/core/extensions/context_extension.dart';
-import 'package:flutter_bloc_projects/projects/image_picker/core/extensions/text_extension.dart';
-import 'package:flutter_bloc_projects/projects/image_picker/core/extensions/widget_extension.dart';
+import 'package:flutter_bloc_projects/shared/extensions/context_extension.dart';
+import 'package:flutter_bloc_projects/shared/extensions/text_extension.dart';
 import 'package:flutter_bloc_projects/projects/image_picker/features/presentation/widgets/atom/dashed_border_painter.dart';
 import 'package:flutter_bloc_projects/projects/image_picker/features/presentation/widgets/molecule/select_image_source.dart';
+import 'package:flutter_bloc_projects/shared/extensions/widget_extension.dart';
 
 class SelectAnImage extends StatelessWidget {
   const SelectAnImage({super.key});
