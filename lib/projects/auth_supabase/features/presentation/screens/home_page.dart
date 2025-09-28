@@ -12,6 +12,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(title: const Text('Home')),
         body: BlocListener<AuthBloc, AuthState>(
+          bloc: context.read<AuthBloc>(),
           listener: (context, state) {
             if (state is AuthUserUnauthenticated) {
               context.goNamed(Routes.authSupabaseRoute);

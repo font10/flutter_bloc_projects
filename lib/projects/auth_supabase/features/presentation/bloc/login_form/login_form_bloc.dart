@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc_projects/projects/auth_supabase/core/forms/inputs/email_input.dart';
+import 'package:flutter_bloc_projects/projects/auth_supabase/core/forms/inputs/password_input.dart';
 import 'package:flutter_bloc_projects/projects/auth_supabase/features/domain/entities/params/auth_params_entity.dart';
 import 'package:flutter_bloc_projects/projects/auth_supabase/features/domain/usecases/sign_in_up_uc.dart';
 
@@ -39,7 +41,7 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginState> {
     Emitter<LoginState> emit,
   ) async =>
       emit(state.copyWith(
-        email: EmailAddress.create(event.value),
+        email: EmailInput.create(event.value),
         formSubmissionStatus: FormSubmissionStatus.initial,
       ));
 
@@ -48,61 +50,9 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginState> {
     Emitter<LoginState> emit,
   ) async =>
       emit(state.copyWith(
-        password: Password.create(event.value),
+        password: PasswordInput.create(event.value),
         formSubmissionStatus: FormSubmissionStatus.initial,
       ));
-}
-
-class EmailAddress extends Equatable {
-  final String value;
-  final String errorMessage;
-  final bool hasError;
-
-  const EmailAddress({
-    required this.value,
-    required this.errorMessage,
-    required this.hasError,
-  });
-
-  factory EmailAddress.create(String value) {
-    if (value.isEmpty ||
-        !RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@"
-                r"[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?"
-                r"(?:\.[a-zA-Z]{2,})+$")
-            .hasMatch(value)) {
-      return EmailAddress(value: value, errorMessage: 'Please insert valid email address', hasError: true);
-    }
-    return EmailAddress(value: value, errorMessage: '', hasError: false);
-  }
-
-  @override
-  List<Object?> get props => [value, errorMessage, hasError];
-
-  static const empty = EmailAddress(value: '', errorMessage: '', hasError: false);
-}
-
-class Password extends Equatable {
-  final String value;
-  final String errorMessage;
-  final bool hasError;
-
-  const Password({
-    required this.value,
-    required this.errorMessage,
-    required this.hasError,
-  });
-
-  factory Password.create(String value) {
-    if (value.isEmpty || value.length < 6) {
-      return Password(value: value, errorMessage: 'Password must be at least 6 characters length.', hasError: true);
-    }
-    return Password(value: value, errorMessage: '', hasError: false);
-  }
-
-  @override
-  List<Object?> get props => [value, errorMessage, hasError];
-
-  static const empty = Password(value: '', errorMessage: '', hasError: false);
 }
 
 /*

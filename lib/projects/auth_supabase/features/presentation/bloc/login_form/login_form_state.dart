@@ -8,19 +8,19 @@ enum FormSubmissionStatus {
 }
 
 class LoginState extends Equatable {
-  final EmailAddress email;
-  final Password password;
+  final EmailInput email;
+  final PasswordInput password;
   final FormSubmissionStatus formSubmissionStatus;
 
   const LoginState({
-    this.email = EmailAddress.empty,
-    this.password = Password.empty,
+    this.email = EmailInput.empty,
+    this.password = PasswordInput.empty,
     this.formSubmissionStatus = FormSubmissionStatus.initial,
   });
 
   LoginState copyWith({
-    EmailAddress? email,
-    Password? password,
+    EmailInput? email,
+    PasswordInput? password,
     FormSubmissionStatus? formSubmissionStatus,
   }) =>
       LoginState(

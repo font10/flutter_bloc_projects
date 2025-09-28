@@ -25,12 +25,14 @@ final GoRouter router = GoRouter(navigatorKey: navigatorKey, initialLocation: Ro
         GoRoute(
           path: Routes.authSupabaseRoute,
           name: Routes.authSupabaseRoute,
-          builder: (context, state) => const AuthScreen(),
+          builder: (context, state) => BlocProvider(
+              create: (context) => inj.sl<AuthBloc>()..add(AuthInitialCheckRequested()), child: const AuthScreen()),
         ),
         GoRoute(
           path: Routes.homePage,
           name: Routes.homePage,
-          builder: (context, state) => const HomePage(),
+          builder: (context, state) => BlocProvider(
+              create: (context) => inj.sl<AuthBloc>()..add(AuthInitialCheckRequested()), child: const HomePage()),
         ),
       ]),
 ]);
