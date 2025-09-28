@@ -2,6 +2,8 @@ import 'package:flutter_bloc_projects/projects/auth_supabase/features/data/datas
 import 'package:flutter_bloc_projects/projects/auth_supabase/features/data/datasource/remote/auth_remote_datasource_impl.dart';
 import 'package:flutter_bloc_projects/projects/auth_supabase/features/data/repositories/auth_repo_impl.dart';
 import 'package:flutter_bloc_projects/projects/auth_supabase/features/domain/repositories/auth_repo.dart';
+import 'package:flutter_bloc_projects/projects/auth_supabase/features/domain/usecases/auth_state_change_uc.dart';
+import 'package:flutter_bloc_projects/projects/auth_supabase/features/domain/usecases/get_signed_user.dart';
 import 'package:flutter_bloc_projects/projects/auth_supabase/features/domain/usecases/get_uuid_uc.dart';
 import 'package:flutter_bloc_projects/projects/auth_supabase/features/domain/usecases/logout_uc.dart';
 import 'package:flutter_bloc_projects/projects/auth_supabase/features/domain/usecases/reset_password_uc.dart';
@@ -19,9 +21,11 @@ Future<void> configureAuthInjection(GetIt sl) async {
         logoutUc: sl(),
         resetPasswordUc: sl(),
         saveUuidUc: sl(),
+        getSignedUserUc: sl(),
+        authStateChangeUc: sl(),
       ));
 
-  sl.registerLazySingleton<LoginFormBloc>(() => LoginFormBloc());
+  sl.registerLazySingleton<LoginFormBloc>(() => LoginFormBloc(signInUpUc: sl()));
   sl.registerLazySingleton<SignUpFormBloc>(() => SignUpFormBloc());
 
   //? Usecase -- Auth
@@ -30,6 +34,8 @@ Future<void> configureAuthInjection(GetIt sl) async {
   sl.registerLazySingleton<ResetPasswordUc>(() => ResetPasswordUc(sl()));
   sl.registerLazySingleton<SaveUuidUc>(() => SaveUuidUc(sl()));
   sl.registerLazySingleton<GetUuidUc>(() => GetUuidUc(sl()));
+  sl.registerLazySingleton<GetSignedUserUc>(() => GetSignedUserUc(sl()));
+  sl.registerLazySingleton<AuthStateChangeUc>(() => AuthStateChangeUc(sl()));
 
   //? Repository -- Auth
   sl.registerLazySingleton<AuthRepo>(() => AuthRepoImpl(

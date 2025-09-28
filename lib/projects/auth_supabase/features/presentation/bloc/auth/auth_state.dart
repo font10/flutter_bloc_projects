@@ -3,6 +3,17 @@ part of 'auth_bloc.dart';
 @immutable
 sealed class AuthState {}
 
+class AuthInitial extends AuthState {}
+
+class AuthUserAuthenticated extends AuthState {
+  final User user;
+
+  AuthUserAuthenticated(this.user);
+}
+
+class AuthUserUnauthenticated extends AuthState {}
+
+/*
 final class AuthInitial extends AuthState {}
 
 final class AuthSuccess extends AuthState {
@@ -31,3 +42,4 @@ final class ResetPasswordFailed extends AuthState {
   final String message;
   ResetPasswordFailed(this.message);
 }
+*/

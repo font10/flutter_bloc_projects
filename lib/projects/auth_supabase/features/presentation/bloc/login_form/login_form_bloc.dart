@@ -1,3 +1,111 @@
+import 'dart:async';
+import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc_projects/projects/auth_supabase/features/domain/entities/params/auth_params_entity.dart';
+import 'package:flutter_bloc_projects/projects/auth_supabase/features/domain/usecases/sign_in_up_uc.dart';
+
+part 'login_form_event.dart';
+part 'login_form_state.dart';
+
+class LoginFormBloc extends Bloc<LoginFormEvent, LoginState> {
+  final SignInUpUc signInUpUc;
+
+  LoginFormBloc({required this.signInUpUc}) : super(const LoginState()) {
+    on<LoginEmailAddressChanged>(_onEmailAddressChanged);
+    on<LoginPasswordChanged>(_onPasswordChanged);
+    on<LoginButtonPressed>(_onLoginButtonPressed);
+  }
+
+  Future<void> _onLoginButtonPressed(
+    LoginButtonPressed event,
+    Emitter<LoginState> emit,
+  ) async {
+    if (!state.isValid) return;
+
+    emit(state.copyWith(formSubmissionStatus: FormSubmissionStatus.submitting));
+
+    final result = await signInUpUc.call(
+      params: AuthParamsEntity(email: state.email.value, password: state.password.value),
+      isSignIn: true,
+    );
+
+    result.fold((l) => emit(state.copyWith(formSubmissionStatus: FormSubmissionStatus.failure)),
+        (r) => emit(state.copyWith(formSubmissionStatus: FormSubmissionStatus.success)));
+  }
+
+  Future<void> _onEmailAddressChanged(
+    LoginEmailAddressChanged event,
+    Emitter<LoginState> emit,
+  ) async =>
+      emit(state.copyWith(
+        email: EmailAddress.create(event.value),
+        formSubmissionStatus: FormSubmissionStatus.initial,
+      ));
+
+  Future<void> _onPasswordChanged(
+    LoginPasswordChanged event,
+    Emitter<LoginState> emit,
+  ) async =>
+      emit(state.copyWith(
+        password: Password.create(event.value),
+        formSubmissionStatus: FormSubmissionStatus.initial,
+      ));
+}
+
+class EmailAddress extends Equatable {
+  final String value;
+  final String errorMessage;
+  final bool hasError;
+
+  const EmailAddress({
+    required this.value,
+    required this.errorMessage,
+    required this.hasError,
+  });
+
+  factory EmailAddress.create(String value) {
+    if (value.isEmpty ||
+        !RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@"
+                r"[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?"
+                r"(?:\.[a-zA-Z]{2,})+$")
+            .hasMatch(value)) {
+      return EmailAddress(value: value, errorMessage: 'Please insert valid email address', hasError: true);
+    }
+    return EmailAddress(value: value, errorMessage: '', hasError: false);
+  }
+
+  @override
+  List<Object?> get props => [value, errorMessage, hasError];
+
+  static const empty = EmailAddress(value: '', errorMessage: '', hasError: false);
+}
+
+class Password extends Equatable {
+  final String value;
+  final String errorMessage;
+  final bool hasError;
+
+  const Password({
+    required this.value,
+    required this.errorMessage,
+    required this.hasError,
+  });
+
+  factory Password.create(String value) {
+    if (value.isEmpty || value.length < 6) {
+      return Password(value: value, errorMessage: 'Password must be at least 6 characters length.', hasError: true);
+    }
+    return Password(value: value, errorMessage: '', hasError: false);
+  }
+
+  @override
+  List<Object?> get props => [value, errorMessage, hasError];
+
+  static const empty = Password(value: '', errorMessage: '', hasError: false);
+}
+
+/*
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc_projects/projects/auth_supabase/core/enum/status.dart';
@@ -92,3 +200,4 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
     return errors;
   }
 }
+*/

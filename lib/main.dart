@@ -27,14 +27,14 @@ class MyApp extends StatelessWidget {
           create: (context) => ImagePickerBloc(ImagePickerService()),
         ),
         BlocProvider<AuthBloc>(
-          create: (context) => inj.sl<AuthBloc>(),
+          create: (context) => inj.sl<AuthBloc>()..add(AuthInitialCheckRequested()),
         ),
         BlocProvider<LoginFormBloc>(
           create: (context) => inj.sl<LoginFormBloc>(),
         ),
-        BlocProvider<SignUpFormBloc>(
+        /*BlocProvider<SignUpFormBloc>(
           create: (context) => inj.sl<SignUpFormBloc>(),
-        ),
+        ),*/
       ],
       child: MaterialApp.router(
         title: 'Bloc image picker',

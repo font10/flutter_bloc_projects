@@ -3,7 +3,17 @@ part of 'auth_bloc.dart';
 @immutable
 sealed class AuthEvent {}
 
-class SignUpEvent extends AuthEvent {
+class AuthInitialCheckRequested extends AuthEvent {}
+
+class AuthOnCurrentUserChanged extends AuthEvent {
+  final User? user;
+
+  AuthOnCurrentUserChanged(this.user);
+}
+
+class AuthLogoutButtonPressed extends AuthEvent {}
+
+/*class SignUpEvent extends AuthEvent {
   final AuthParamsEntity params;
   SignUpEvent(this.params);
 }
@@ -24,24 +34,4 @@ class LogoutEvent extends AuthEvent {}
 class ForgotPasswordEvent extends AuthEvent {
   final String email;
   ForgotPasswordEvent(this.email);
-}
-
-/*
-class AuthEmailChanged extends AuthEvent {
-  final String email;
-
-  AuthEmailChanged(this.email);
-
-  List<Object?> get props => [email];
-}
-
-class AuthPasswordChanged extends AuthEvent {
-  final String password;
-
-  AuthPasswordChanged(this.password);
-
-  List<Object?> get props => [password];
-}
-
-class AuthFormSubmitted extends AuthEvent {}
-*/
+}*/

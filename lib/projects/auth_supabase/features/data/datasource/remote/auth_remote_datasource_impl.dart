@@ -24,12 +24,22 @@ class AuthRemoteDatasourceImpl extends AuthRemoteDataSource {
 
   @override
   Future<void> logout() async {
-    await supabaseClient.auth.signOut();
+    return await supabaseClient.auth.signOut();
   }
 
   @override
   Future<void> resetPassword(String email) async {
-    await supabaseClient.auth.resetPasswordForEmail(email);
+    return await supabaseClient.auth.resetPasswordForEmail(email);
+  }
+
+  @override
+  Stream<User?> authStateChanged() {
+    return supabaseClient.auth.onAuthStateChange.map((event) => event.session?.user);
+  }
+
+  @override
+  Future<User?> getCurrentUser() async {
+    return supabaseClient.auth.currentUser;
   }
 }
 

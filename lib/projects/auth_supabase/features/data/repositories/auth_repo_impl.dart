@@ -68,4 +68,22 @@ class AuthRepoImpl implements AuthRepo {
       return const Left(Failure('Something went wrong'));
     }
   }
+
+  @override
+  Stream<User?> authStateChange() {
+    final Stream<User?> stream = _remoteDataSource.authStateChanged();
+    return stream;
+  }
+
+  @override
+  Future<Either<Failure, User?>> getCurrentUser() async {
+    try {
+      final User? user = await _remoteDataSource.getCurrentUser();
+      return Right(user);
+    } on AuthException catch (e) {
+      return Left(Failure(e.message));
+    } catch (e) {
+      return const Left(Failure('Something went wrong'));
+    }
+  }
 }

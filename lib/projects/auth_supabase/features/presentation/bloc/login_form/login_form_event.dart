@@ -1,34 +1,32 @@
 part of 'login_form_bloc.dart';
 
 @immutable
-sealed class LoginFormEvent {}
+abstract class LoginFormEvent extends Equatable {
+  const LoginFormEvent();
 
-class LoginFormInitial extends LoginFormEvent {}
+  @override
+  List<Object?> get props => [];
+}
 
-class LoginEmailChanged extends LoginFormEvent {
-  final String email;
+class LoginEmailAddressChanged extends LoginFormEvent {
+  final String value;
 
-  LoginEmailChanged(this.email);
-
-  List<Object?> get props => [email];
+  const LoginEmailAddressChanged(this.value);
+  @override
+  List<Object?> get props => [value];
 }
 
 class LoginPasswordChanged extends LoginFormEvent {
-  final String password;
+  final String value;
 
-  LoginPasswordChanged(this.password);
-
-  List<Object?> get props => [password];
+  const LoginPasswordChanged(this.value);
+  @override
+  List<Object?> get props => [value];
 }
 
-class LoginShowPasswordChanged extends LoginFormEvent {
-  final bool showPassword;
+class LoginButtonPressed extends LoginFormEvent {
+  const LoginButtonPressed();
 
-  LoginShowPasswordChanged(this.showPassword);
-
-  List<Object?> get props => [showPassword];
+  @override
+  List<Object?> get props => [];
 }
-
-class LoginFormSubmitted extends LoginFormEvent {}
-
-class LoginClearFields extends LoginFormEvent {}
