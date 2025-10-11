@@ -39,7 +39,8 @@ class MyApp extends StatelessWidget {
         title: 'Bloc image picker',
         color: Colors.grey.shade900,
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(scaffoldBackgroundColor: Colors.grey.shade900, useMaterial3: true),
+        theme: ThemeData(
+            scaffoldBackgroundColor: Colors.grey.shade900, primaryColor: Colors.grey.shade900, useMaterial3: true),
         routerConfig: router,
       ),
     );

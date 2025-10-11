@@ -3,8 +3,8 @@ import 'package:flutter_bloc_projects/shared/extensions/color_extension.dart';
 
 class AppButton extends StatelessWidget {
   final String text;
-  final bool isLoading;
   final Color? color;
+  final bool isLoading;
   final VoidCallback onPressed;
 
   const AppButton({

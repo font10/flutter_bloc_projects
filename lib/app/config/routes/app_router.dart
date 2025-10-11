@@ -4,10 +4,9 @@ import 'package:flutter_bloc_projects/app/config/routes/routes.dart';
 import 'package:flutter_bloc_projects/app/projects_screen/projects_screen.dart';
 import 'package:flutter_bloc_projects/projects/auth_supabase/features/presentation/bloc/auth/auth_bloc.dart';
 import 'package:flutter_bloc_projects/projects/auth_supabase/features/presentation/screens/auth_screen.dart';
-import 'package:flutter_bloc_projects/projects/auth_supabase/features/presentation/screens/home_page.dart';
+import 'package:flutter_bloc_projects/projects/auth_supabase/features/presentation/screens/home_screen.dart';
 import 'package:flutter_bloc_projects/projects/image_picker/features/presentation/screens/image_picker_screen.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_bloc_projects/di/injection.dart' as inj;
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -25,12 +24,20 @@ final GoRouter router = GoRouter(navigatorKey: navigatorKey, initialLocation: Ro
         GoRoute(
           path: Routes.authSupabaseRoute,
           name: Routes.authSupabaseRoute,
-          builder: (context, state) => const AuthScreen(),
+          builder: (context, state) => BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              if (state is AuthUserAuthenticated) {
+                return const HomeScreen();
+              } else {
+                return const AuthScreen();
+              }
+            },
+          ),
         ),
         GoRoute(
           path: Routes.homePage,
           name: Routes.homePage,
-          builder: (context, state) => const HomePage(),
+          builder: (context, state) => const HomeScreen(),
         ),
       ]),
 ]);

@@ -4,13 +4,17 @@ import 'package:flutter_bloc_projects/app/config/routes/routes.dart';
 import 'package:flutter_bloc_projects/projects/auth_supabase/features/presentation/bloc/auth/auth_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Home')),
+        backgroundColor: Colors.grey.shade900,
+        appBar: AppBar(
+            title: const Text('Home', style: TextStyle(color: Colors.white)),
+            backgroundColor: Colors.grey.shade900,
+            iconTheme: const IconThemeData(color: Colors.white)),
         body: BlocListener<AuthBloc, AuthState>(
           bloc: context.read<AuthBloc>(),
           listener: (context, state) {
@@ -18,7 +22,7 @@ class HomePage extends StatelessWidget {
               context.goNamed(Routes.authSupabaseRoute);
             }
           },
-          child: Center(child: const _LogoutButton()),
+          child: const Center(child: _LogoutButton()),
         ));
   }
 }
