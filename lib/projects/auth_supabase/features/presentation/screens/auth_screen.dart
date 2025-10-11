@@ -6,8 +6,22 @@ import 'package:flutter_bloc_projects/projects/auth_supabase/features/presentati
 import 'package:flutter_bloc_projects/shared/widgets/atom/custom_app_bar.dart';
 import 'package:go_router/go_router.dart';
 
-class AuthScreen extends StatelessWidget {
+class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
+
+  @override
+  State<AuthScreen> createState() => _AuthScreenState();
+}
+
+class _AuthScreenState extends State<AuthScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<AuthBloc>().add(AuthInitialCheckRequested());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
