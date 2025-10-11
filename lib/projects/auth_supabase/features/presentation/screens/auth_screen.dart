@@ -18,9 +18,9 @@ class _AuthScreenState extends State<AuthScreen> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    /*WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<AuthBloc>().add(AuthInitialCheckRequested());
-    });
+    });*/
   }
 
   @override

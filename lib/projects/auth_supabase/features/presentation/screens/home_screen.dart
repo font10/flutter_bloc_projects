@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_projects/app/config/routes/routes.dart';
 import 'package:flutter_bloc_projects/projects/auth_supabase/features/presentation/bloc/auth/auth_bloc.dart';
+import 'package:flutter_bloc_projects/shared/extensions/context_extension.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -18,8 +19,12 @@ class HomeScreen extends StatelessWidget {
         body: BlocListener<AuthBloc, AuthState>(
           bloc: context.read<AuthBloc>(),
           listener: (context, state) {
-            if (state is AuthUserUnauthenticated) {
+            if (state is AuthUserLogoutSuccess) {
+              print(state);
               context.goNamed(Routes.authSupabaseRoute);
+            }
+            if (state is AuthUserLogoutFailed) {
+              context.snackBar(message: state.message, duration: 4);
             }
           },
           child: const Center(child: _LogoutButton()),

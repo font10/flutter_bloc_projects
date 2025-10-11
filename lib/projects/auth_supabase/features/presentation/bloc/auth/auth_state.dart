@@ -12,3 +12,11 @@ class AuthUserAuthenticated extends AuthState {
 }
 
 class AuthUserUnauthenticated extends AuthState {}
+
+class AuthUserLogoutSuccess extends AuthState {}
+
+class AuthUserLogoutFailed extends AuthState {
+  final String message;
+
+  AuthUserLogoutFailed(this.message);
+}

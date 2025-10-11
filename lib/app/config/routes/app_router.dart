@@ -27,7 +27,11 @@ final GoRouter router = GoRouter(navigatorKey: navigatorKey, initialLocation: Ro
           builder: (context, state) => BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
               if (state is AuthUserAuthenticated) {
-                return const HomeScreen();
+                if (state.user != null) {
+                  return const HomeScreen();
+                } else {
+                  return const AuthScreen();
+                }
               } else {
                 return const AuthScreen();
               }
