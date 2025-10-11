@@ -6,7 +6,7 @@ sealed class AuthState {}
 class AuthInitial extends AuthState {}
 
 class AuthUserAuthenticated extends AuthState {
-  final User user;
+  final User? user;
 
   AuthUserAuthenticated(this.user);
 }

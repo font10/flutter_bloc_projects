@@ -23,11 +23,13 @@ class AuthScreen extends StatelessWidget {
               context.goNamed(Routes.authSupabaseRoute);
             }
             if (state is AuthUserAuthenticated) {
-              context.goNamed(Routes.homePage);
+              if (state.user != null) {
+                context.goNamed(Routes.homePage);
+              }
             }
           },
           builder: (context, state) {
-            return BlocProvider(create: (context) => inj.sl<LoginFormBloc>(), child: const _LoginForm());
+            return const _LoginForm();
           },
         ));
   }
@@ -37,7 +39,7 @@ class _LoginForm extends StatelessWidget {
   const _LoginForm();
 
   @override
-  Widget build(BuildContext context) => BlocListener<LoginFormBloc, LoginState>(
+  Widget build(BuildContext context) => BlocConsumer<LoginFormBloc, LoginState>(
         bloc: context.read<LoginFormBloc>(),
         listenWhen: (previous, current) => current.isSubmissionSuccessOrFailure(),
         listener: (context, state) {
@@ -48,13 +50,7 @@ class _LoginForm extends StatelessWidget {
             context.snackBar(message: 'Login failed. Please check your credentials.');
           }
         },
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: BlocBuilder<LoginFormBloc, LoginState>(
-            builder: (context, state) {
-              return LoginForm(state: state);
-            },
-          ),
-        ),
+        builder: (context, state) =>
+            Padding(padding: const EdgeInsets.symmetric(horizontal: 16.0), child: LoginForm(state: state)),
       );
 }
