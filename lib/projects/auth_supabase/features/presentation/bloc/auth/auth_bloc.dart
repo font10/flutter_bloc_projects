@@ -60,7 +60,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _onInitialAuthChecked(AuthInitialCheckRequested event, Emitter<AuthState> emit) async {
     final Either<Failure, User?> signedInUser = await getSignedUserUc.call();
-    signedInUser.fold((l) => emit(AuthUserUnauthenticated()), (r) => emit(AuthUserAuthenticated(r!)));
+    print(signedInUser);
+    signedInUser.fold((l) => emit(AuthUserUnauthenticated()), (r) => emit(AuthUserAuthenticated(r)));
     //signedInUser != null ? emit(AuthUserAuthenticated(signedInUser)) : emit(AuthUserUnauthenticated());
   }
 

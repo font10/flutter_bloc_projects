@@ -22,17 +22,26 @@ final GoRouter router = GoRouter(navigatorKey: navigatorKey, initialLocation: Ro
           name: Routes.imagePickerRoute,
           builder: (context, state) => const ImagePickerScreen(),
         ),
-        GoRoute(
-          path: Routes.authSupabaseRoute,
-          name: Routes.authSupabaseRoute,
-          builder: (context, state) => BlocProvider(
-              create: (context) => inj.sl<AuthBloc>()..add(AuthInitialCheckRequested()), child: const AuthScreen()),
-        ),
-        GoRoute(
-          path: Routes.homePage,
-          name: Routes.homePage,
-          builder: (context, state) => BlocProvider(
-              create: (context) => inj.sl<AuthBloc>()..add(AuthInitialCheckRequested()), child: const HomePage()),
+        ShellRoute(
+          builder: (context, state, child) {
+            // AuthBloc disponible solo para las rutas que lo necesitan
+            return BlocProvider(
+              create: (context) => inj.sl<AuthBloc>()..add(AuthInitialCheckRequested()),
+              child: child,
+            );
+          },
+          routes: [
+            GoRoute(
+              path: Routes.authSupabaseRoute,
+              name: Routes.authSupabaseRoute,
+              builder: (context, state) => const AuthScreen(),
+            ),
+            GoRoute(
+              path: Routes.homePage,
+              name: Routes.homePage,
+              builder: (context, state) => const HomePage(),
+            ),
+          ],
         ),
       ]),
 ]);

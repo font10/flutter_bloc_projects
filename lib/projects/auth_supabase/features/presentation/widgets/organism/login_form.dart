@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_projects/projects/auth_supabase/features/presentation/bloc/login_form/login_form_bloc.dart';
+import 'package:flutter_bloc_projects/projects/auth_supabase/features/presentation/widgets/molecule/auth_header.dart';
 import 'package:flutter_bloc_projects/shared/extensions/text_extension.dart';
 import 'package:flutter_bloc_projects/shared/widgets/atom/app_button.dart';
 import 'package:flutter_bloc_projects/shared/widgets/atom/custom_textfield.dart';
@@ -15,16 +16,7 @@ class LoginForm extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(
-          TextExtension.signIn,
-          style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          TextExtension.signInSubtitle,
-          style: TextStyle(fontSize: 16, color: Colors.blueGrey.shade100),
-          textAlign: TextAlign.center,
-        ),
+        AuthHeader(title: TextExtension.signIn, subtitle: TextExtension.signInSubtitle),
         const SizedBox(height: 24),
         CustomTextField(
             hintText: 'Email address',

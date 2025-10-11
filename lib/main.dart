@@ -24,10 +24,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => ImagePickerBloc(ImagePickerService()),
         ),
-        /*BlocProvider<AuthBloc>(
-          create: (context) => inj.sl<AuthBloc>()..add(AuthInitialCheckRequested()),
-        ),
-        BlocProvider<LoginFormBloc>(
+        /*BlocProvider<LoginFormBloc>(
           create: (context) => inj.sl<LoginFormBloc>(),
         ),*/
         /*BlocProvider<SignUpFormBloc>(
