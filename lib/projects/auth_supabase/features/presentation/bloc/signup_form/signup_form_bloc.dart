@@ -1,42 +1,42 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc_projects/projects/auth_supabase/core/enum/status.dart';
-import 'package:flutter_bloc_projects/projects/auth_supabase/core/forms/inputs/login_form_validation.dart';
+import 'package:flutter_bloc_projects/projects/auth_supabase/core/forms/inputs/email_input.dart';
+import 'package:flutter_bloc_projects/projects/auth_supabase/core/forms/inputs/password_input.dart';
+import 'package:flutter_bloc_projects/projects/auth_supabase/features/domain/entities/params/auth_params_entity.dart';
+import 'package:flutter_bloc_projects/projects/auth_supabase/features/domain/usecases/sign_in_up_uc.dart';
+import 'package:flutter_bloc_projects/projects/auth_supabase/features/presentation/bloc/login_form/login_form_bloc.dart';
 import 'package:meta/meta.dart';
 
 part 'signup_form_event.dart';
 part 'signup_form_state.dart';
 
 class SignUpFormBloc extends Bloc<SignUpFormEvent, SignUpFormState> {
-  SignUpFormBloc() : super(const SignUpFormState()) {
-    on<SignUpEmailChanged>(_onEmailChanged);
+  final SignInUpUc signInUpUc;
+  SignUpFormBloc({required this.signInUpUc}) : super(const SignUpFormState()) {
+    on<SignUpEmailAddressChanged>(_onEmailAddressChanged);
     on<SignUpPasswordChanged>(_onPasswordChanged);
     on<SignUpShowPasswordChanged>(_onShowPasswordChanged);
-    on<SignUpFormSubmitted>(_onFormSubmitted);
+    on<SignUpButtonPressed>(_onSignUpButtonPressed);
     on<SignUpClearFields>(_onClearFields);
   }
 
-  void _onEmailChanged(SignUpEmailChanged event, Emitter<SignUpFormState> emit) {
-    Map<String, String> errors = Map<String, String>.from(state.fieldErrors);
+  Future<void> _onEmailAddressChanged(
+    SignUpEmailAddressChanged event,
+    Emitter<SignUpFormState> emit,
+  ) async =>
+      emit(state.copyWith(
+        email: EmailInput.create(event.email),
+        formSubmissionStatus: FormSubmissionStatus.initial,
+      ));
 
-    errors = ValidationInput.validateEmail(email: event.email, errors: errors);
-
-    emit(state.copyWith(
-      email: event.email,
-      fieldErrors: errors,
-    ));
-  }
-
-  void _onPasswordChanged(SignUpPasswordChanged event, Emitter<SignUpFormState> emit) {
-    Map<String, String> errors = Map<String, String>.from(state.fieldErrors);
-
-    errors = ValidationInput.validatePassword(password: event.password, errors: errors);
-
-    emit(state.copyWith(
-      password: event.password,
-      fieldErrors: errors,
-    ));
-  }
+  Future<void> _onPasswordChanged(
+    SignUpPasswordChanged event,
+    Emitter<SignUpFormState> emit,
+  ) async =>
+      emit(state.copyWith(
+        password: PasswordInput.create(event.password),
+        formSubmissionStatus: FormSubmissionStatus.initial,
+      ));
 
   void _onShowPasswordChanged(SignUpShowPasswordChanged event, Emitter<SignUpFormState> emit) {
     emit(state.copyWith(
@@ -46,48 +46,25 @@ class SignUpFormBloc extends Bloc<SignUpFormEvent, SignUpFormState> {
 
   void _onClearFields(SignUpClearFields event, Emitter<SignUpFormState> emit) {
     emit(state.copyWith(
-      email: '',
-      password: '',
+      email: EmailInput.empty,
+      password: PasswordInput.empty,
     ));
   }
 
-  Future<void> _onFormSubmitted(SignUpFormSubmitted event, Emitter<SignUpFormState> emit) async {
-    if (!state.isFormValid) {
-      Map<String, String> errors = <String, String>{};
+  Future<void> _onSignUpButtonPressed(
+    SignUpButtonPressed event,
+    Emitter<SignUpFormState> emit,
+  ) async {
+    if (!state.isValid) return;
 
-      errors = _onErrorsHandle(errors);
+    emit(state.copyWith(formSubmissionStatus: FormSubmissionStatus.submitting));
 
-      emit(state.copyWith(
-        fieldErrors: errors,
-      ));
-      return;
-    }
+    final result = await signInUpUc.call(
+      params: AuthParamsEntity(email: state.email.value, password: state.password.value),
+      isSignIn: false,
+    );
 
-    emit(state.copyWith(status: FormStatus.loading));
-
-    try {
-      emit(state.copyWith(
-        status: FormStatus.success,
-        successMessage: 'Formulario enviado exitosamente',
-      ));
-
-      emit(state.copyWith(status: FormStatus.initial));
-    } catch (e) {
-      emit(state.copyWith(
-        status: FormStatus.failure,
-        successMessage: 'Error al enviar el formulario',
-      ));
-    }
-  }
-
-  Map<String, String> _onErrorsHandle(Map<String, String> errors) {
-    if (state.email.isEmpty) {
-      errors['email'] = 'Email es requerido';
-    }
-    if (state.password.isEmpty) {
-      errors['password'] = 'Password es requerido';
-    }
-
-    return errors;
+    result.fold((l) => emit(state.copyWith(formSubmissionStatus: FormSubmissionStatus.failure)),
+        (r) => emit(state.copyWith(formSubmissionStatus: FormSubmissionStatus.success)));
   }
 }

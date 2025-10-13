@@ -39,6 +39,11 @@ final GoRouter router = GoRouter(navigatorKey: navigatorKey, initialLocation: Ro
           ),
         ),
         GoRoute(
+          path: Routes.authSignUpRoute,
+          name: Routes.authSignUpRoute,
+          builder: (context, state) => const AuthScreen(),
+        ),
+        GoRoute(
           path: Routes.homePage,
           name: Routes.homePage,
           builder: (context, state) => const HomeScreen(),

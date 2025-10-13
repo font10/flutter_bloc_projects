@@ -16,4 +16,6 @@ extension TextExtension on BuildContext {
   static String get logout => 'Logout';
   static String get errorSendingForm => 'Error sending form';
   static String get signInSubtitle => 'Enter your credentials to sign in';
+  static String get emailAddres => 'Email Address';
+  static String get password => 'Password';
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc_projects/shared/extensions/color_extension.dart';
 import 'package:flutter_bloc_projects/shared/extensions/textstyle_extension.dart';
 
-class CustomTextField extends StatelessWidget {
+class AppTextField extends StatelessWidget {
   final String hintText;
   final String? value;
   final String? errorText;
@@ -15,7 +15,7 @@ class CustomTextField extends StatelessWidget {
   final Function(String) onChanged;
   final Function()? onSuffixIconPressed;
 
-  const CustomTextField({
+  const AppTextField({
     super.key,
     required this.hintText,
     required this.onChanged,

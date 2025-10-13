@@ -2,58 +2,37 @@ part of 'signup_form_bloc.dart';
 
 @immutable
 class SignUpFormState extends Equatable {
-  final FormStatus status;
-  final String email;
-  final String password;
-  final bool isLoginMode;
-  final Map<String, String> fieldErrors;
-  final String? successMessage;
+  final EmailInput email;
+  final PasswordInput password;
+  final FormSubmissionStatus formSubmissionStatus;
   final bool showPassword;
 
   const SignUpFormState({
-    this.status = FormStatus.initial,
-    this.email = '',
-    this.password = '',
-    this.isLoginMode = true,
-    this.fieldErrors = const {},
-    this.successMessage,
+    this.email = EmailInput.empty,
+    this.password = PasswordInput.empty,
+    this.formSubmissionStatus = FormSubmissionStatus.initial,
     this.showPassword = false,
   });
 
-  SignUpFormState copyWith({
-    FormStatus? status,
-    String? email,
-    String? password,
-    String? confirmPassword,
-    String? name,
-    bool? isLoginMode,
-    Map<String, String>? fieldErrors,
-    String? successMessage,
-    bool? showPassword,
-  }) {
-    return SignUpFormState(
-      status: status ?? this.status,
-      email: email ?? this.email,
-      password: password ?? this.password,
-      isLoginMode: isLoginMode ?? this.isLoginMode,
-      fieldErrors: fieldErrors ?? this.fieldErrors,
-      successMessage: successMessage ?? this.successMessage,
-      showPassword: showPassword ?? this.showPassword,
-    );
-  }
-
-  bool get isFormValid {
-    return email.isNotEmpty && password.isNotEmpty && fieldErrors.isEmpty;
-  }
+  SignUpFormState copyWith(
+          {EmailInput? email,
+          PasswordInput? password,
+          FormSubmissionStatus? formSubmissionStatus,
+          bool? showPassword}) =>
+      SignUpFormState(
+        email: email ?? this.email,
+        password: password ?? this.password,
+        formSubmissionStatus: formSubmissionStatus ?? this.formSubmissionStatus,
+        showPassword: showPassword ?? this.showPassword,
+      );
 
   @override
-  List<Object?> get props => [
-        status,
-        email,
-        password,
-        isLoginMode,
-        fieldErrors,
-        successMessage,
-        showPassword,
-      ];
+  List<Object?> get props => [email, password, formSubmissionStatus, showPassword];
+
+  bool isSubmitting() => formSubmissionStatus == FormSubmissionStatus.submitting;
+
+  bool isSubmissionSuccessOrFailure() =>
+      formSubmissionStatus == FormSubmissionStatus.success || formSubmissionStatus == FormSubmissionStatus.failure;
+
+  bool get isValid => !email.hasError && !password.hasError;
 }

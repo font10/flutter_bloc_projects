@@ -5,10 +5,10 @@ sealed class SignUpFormEvent {}
 
 class SignUpFormInitial extends SignUpFormEvent {}
 
-class SignUpEmailChanged extends SignUpFormEvent {
+class SignUpEmailAddressChanged extends SignUpFormEvent {
   final String email;
 
-  SignUpEmailChanged(this.email);
+  SignUpEmailAddressChanged(this.email);
 
   List<Object?> get props => [email];
 }
@@ -32,3 +32,10 @@ class SignUpShowPasswordChanged extends SignUpFormEvent {
 class SignUpFormSubmitted extends SignUpFormEvent {}
 
 class SignUpClearFields extends SignUpFormEvent {}
+
+class SignUpButtonPressed extends SignUpFormEvent {
+  SignUpButtonPressed();
+
+  @override
+  List<Object?> get props => [];
+}

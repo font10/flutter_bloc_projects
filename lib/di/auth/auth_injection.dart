@@ -10,6 +10,7 @@ import 'package:flutter_bloc_projects/projects/auth_supabase/features/domain/use
 import 'package:flutter_bloc_projects/projects/auth_supabase/features/domain/usecases/save_uuid_uc.dart';
 import 'package:flutter_bloc_projects/projects/auth_supabase/features/domain/usecases/sign_in_up_uc.dart';
 import 'package:flutter_bloc_projects/projects/auth_supabase/features/presentation/bloc/auth/auth_bloc.dart';
+import 'package:flutter_bloc_projects/projects/auth_supabase/features/presentation/bloc/auth_mode/auth_mode_bloc.dart';
 import 'package:flutter_bloc_projects/projects/auth_supabase/features/presentation/bloc/login_form/login_form_bloc.dart';
 import 'package:flutter_bloc_projects/projects/auth_supabase/features/presentation/bloc/signup_form/signup_form_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -25,8 +26,10 @@ Future<void> configureAuthInjection(GetIt sl) async {
         authStateChangeUc: sl(),
       ));
 
+  sl.registerLazySingleton<AuthModeBloc>(() => AuthModeBloc());
+
   sl.registerLazySingleton<LoginFormBloc>(() => LoginFormBloc(signInUpUc: sl()));
-  sl.registerLazySingleton<SignUpFormBloc>(() => SignUpFormBloc());
+  sl.registerLazySingleton<SignUpFormBloc>(() => SignUpFormBloc(signInUpUc: sl()));
 
   //? Usecase -- Auth
   sl.registerLazySingleton<SignInUpUc>(() => SignInUpUc(sl()));
